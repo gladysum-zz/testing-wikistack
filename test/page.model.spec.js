@@ -126,12 +126,17 @@ describe('Page model', function () {
 
       });
       
-      xit('gets other pages with any common tags', function(done){
+      it('gets other pages with any common tags', function(done){
 		
 		page1IsBeingCreated.findSimilar()
       	.then(function (pages) {
-		    expect(pages).to.include(page3IsBeingCreated);
-		    done();
+      		pages.forEach(function(page){
+      			const similarTags = page.tags.filter(function (tag) {
+      				return page1IsBeingCreated.tags.contains(tag);
+      			});
+      			expect(similarTags.length).to.be.greater.than(0);
+      		})
+      		done();
 		})
 		.catch(done);
       });
